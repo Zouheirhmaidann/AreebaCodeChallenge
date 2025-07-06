@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreateOrUpdateEmployeeDto } from "src/employees/dto/create-employee.dto";
@@ -13,27 +17,33 @@ export class EmployeesService {
 
   // Function to create an employee
   async upsert(data: CreateOrUpdateEmployeeDto): Promise<Employee> {
-    const { email, full_name, department, position, address, phone, salary } =
-      data;
-    // Check if email already exists in the database
-    const existingEmployee = await this.employeeModel.findOne({ email }).exec();
-    // if existing, update the employee
-    if (existingEmployee) {
-      await this.employeeModel
-        .findOneAndUpdate(
-          { email },
-          { full_name, department, position, address, phone, salary },
-          {
-            new: true,
-          }
-        )
+    try {
+      const { email, full_name, department, position, address, phone, salary } =
+        data;
+      // Check if email already exists in the database
+      const existingEmployee = await this.employeeModel
+        .findOne({ email })
         .exec();
-      return existingEmployee;
+      // if existing, update the employee
+      if (existingEmployee) {
+        await this.employeeModel
+          .findOneAndUpdate(
+            { email },
+            { full_name, department, position, address, phone, salary },
+            {
+              new: true,
+            }
+          )
+          .exec();
+        return existingEmployee;
+      }
+      // Create the employee
+      const newEmployee = new this.employeeModel(data);
+      // Save the employee
+      return newEmployee.save();
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
     }
-    // Create the employee
-    const newEmployee = new this.employeeModel(data);
-    // Save the employee
-    return newEmployee.save();
   }
   // Function to create multiple employees for testing
   async upsertMany(
@@ -42,8 +52,14 @@ export class EmployeesService {
     const results: Employee[] = [];
 
     for (const emp of employees) {
-      const updatedOrCreated = await this.upsert(emp);
-      results.push(updatedOrCreated);
+      try {
+        const updatedOrCreated = await this.upsert(emp);
+        results.push(updatedOrCreated);
+      } catch (error) {
+        throw new InternalServerErrorException(
+          `Error upserting employee: ${error.message}`
+        );
+      }
     }
 
     return results;
@@ -68,31 +84,44 @@ export class EmployeesService {
         ],
       };
     }
-    // Fetch the employees
-    const [data, total] = await Promise.all([
-      this.employeeModel.find(filter).skip(skip).limit(limit).exec(),
-      this.employeeModel.countDocuments(filter).exec(),
-    ]);
-    // Return the employees
-    return { data, total, page, limit };
+
+    try {
+      // Fetch the employees
+      const [data, total] = await Promise.all([
+        this.employeeModel.find(filter).skip(skip).limit(limit).exec(),
+        this.employeeModel.countDocuments(filter).exec(),
+      ]);
+      // Return the employees
+      return { data, total, page, limit };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   // Function to fetch an employee by id
   async findOne(email: string): Promise<Employee> {
-    // Check if email already exists in the database
-    const existingEmployee = await this.employeeModel
-      .findOne({ email: email })
-      .exec();
-    // if existing, throw an error
-    if (!existingEmployee)
-      throw new ConflictException("Employee with this email does not exist");
-    // Return the employee
-    return existingEmployee;
+    try {
+      // Check if email already exists in the database
+      const existingEmployee = await this.employeeModel
+        .findOne({ email: email })
+        .exec();
+      // if existing, throw an error
+      if (!existingEmployee)
+        throw new ConflictException("Employee with this email does not exist");
+      // Return the employee
+      return existingEmployee;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   // Function to delete an employee
   async deleteById(id: string): Promise<Employee | null> {
-    // Find and delete the employee, returning the deleted doc
-    return this.employeeModel.findByIdAndDelete(id).exec();
+    try {
+      // Find and delete the employee, returning the deleted doc
+      return await this.employeeModel.findByIdAndDelete(id).exec();
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }
