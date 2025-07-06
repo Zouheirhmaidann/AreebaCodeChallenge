@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from 'src/schemas/User/user.schema';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Module } from "@nestjs/common";
+import { UsersService } from "../service/users.service";
+import { UsersController } from "../controller/users.controller";
+import { MongooseModule } from "@nestjs/mongoose";
+import { User, UserSchema } from "src/schemas/User/user.schema";
+import { JwtModule } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
   // Importing the user schema
@@ -16,8 +16,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '1d' },
+        secret: configService.get<string>("JWT_SECRET"),
+        signOptions: { expiresIn: "1d" },
       }),
     }),
   ],

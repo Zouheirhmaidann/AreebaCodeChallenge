@@ -1,12 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { Body, Controller, Post } from "@nestjs/common";
+import { UsersService } from "../service/users.service";
 
-@Controller('users')
+@Controller("users")
 export class UsersController {
   // Create the constructor
   constructor(private userService: UsersService) {}
   // Post method to create a new user
-  @Post('register')
+  @Post("register")
   // Register function
   async register(@Body() body: { email: string; password: string }) {
     // Call the create function from the UsersService, pass the email and password
@@ -19,7 +19,7 @@ export class UsersController {
     const data = await this.userService.login(body?.email, body?.password);
     // Call the login function from the UsersService, pass the email and password
     return {
-      message: 'Login successful',
+      message: "Login successful",
       user_email: data?.user?.email,
       token: data?.token,
     };
