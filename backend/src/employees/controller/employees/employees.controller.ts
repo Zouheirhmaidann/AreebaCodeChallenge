@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guard/jwt.auth.guard";
 import { CreateOrUpdateEmployeeDto } from "src/employees/dto/create-employee.dto";
 import { EmployeesService } from "src/employees/service/employees/employees.service";
@@ -37,5 +46,16 @@ export class EmployeesController {
     limit = Number(limit);
 
     return this.employeesService.findAllPaginated(page, limit, search);
+  }
+  // Delete method to delete an employee
+  @Delete("deleteEmployee/:id")
+  @UseGuards(JwtAuthGuard)
+  async deleteEmployee(@Param("id") id: string): Promise<{ message: string }> {
+    const result = await this.employeesService.deleteById(id);
+    if (result.deletedCount && result.deletedCount > 0) {
+      return { message: `Employee with id ${id} deleted successfully.` };
+    } else {
+      return { message: `Employee with id ${id} not found.` };
+    }
   }
 }

@@ -89,4 +89,9 @@ export class EmployeesService {
     // Return the employee
     return existingEmployee;
   }
+
+  // Function to delete an employee
+  async deleteById(id: string): Promise<{ deletedCount?: number }> {
+    return this.employeeModel.deleteOne({ _id: id }).exec();
+  }
 }
