@@ -51,9 +51,12 @@ export class EmployeesController {
   @Delete("deleteEmployee/:id")
   @UseGuards(JwtAuthGuard)
   async deleteEmployee(@Param("id") id: string): Promise<{ message: string }> {
-    const result = await this.employeesService.deleteById(id);
-    if (result.deletedCount && result.deletedCount > 0) {
-      return { message: `Employee with id ${id} deleted successfully.` };
+    const deletedEmployee = await this.employeesService.deleteById(id);
+
+    if (deletedEmployee) {
+      return {
+        message: `Employee with email ${deletedEmployee?.email} deleted successfully.`,
+      };
     } else {
       return { message: `Employee with id ${id} not found.` };
     }
