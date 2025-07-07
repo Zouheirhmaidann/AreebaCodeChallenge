@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  InternalServerErrorException,
   Param,
   Post,
   Query,
@@ -21,7 +22,12 @@ export class EmployeesController {
   @Post(`upsertEmployee`)
   @UseGuards(JwtAuthGuard)
   async upsert(@Body() body: CreateOrUpdateEmployeeDto): Promise<Employee> {
-    return this.employeesService.upsert(body);
+    try {
+      return await this.employeesService.upsert(body);
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(error.message);
+    }
   }
   // Upsert many for testing to create multiple employees
   @Post(`upsertMany`)

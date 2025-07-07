@@ -81,6 +81,7 @@ export class EmployeesService {
           { phone: searchRegex },
           { department: searchRegex },
           { position: searchRegex },
+          { full_name: searchRegex },
         ],
       };
     }
