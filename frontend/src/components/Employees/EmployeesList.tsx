@@ -14,6 +14,20 @@ import {
 import { memo, useState } from "react";
 import toast, { LoaderIcon } from "react-hot-toast";
 
+/**
+ * EmployeesList component
+ *
+ * This component renders a grid of employee cards.
+ * Each card displays the employee's name, position, email, phone, department, salary, and address.
+ * Each card also has edit and delete buttons.
+ * The edit button opens the employee modal with the employee's data pre-filled.
+ * The delete button deletes the employee from the database.
+ *
+ * Props:
+ * - employees: An array of Employee objects.
+ * - openModal: A function to open the employee modal.
+ * - setEmployees: A function to update the list of employees.
+ */
 const EmployeesList: React.FC<{
   employees: Employee[];
   openModal: (employee?: Employee) => void;
@@ -25,7 +39,9 @@ const EmployeesList: React.FC<{
   const handleDelete = async (id: string) => {
     try {
       setLoading(true);
+      // Confirm delete
       if (window.confirm("Are you sure you want to delete this employee?")) {
+        // Delete employee
         await AxiosInstance.delete(`/employees/deleteEmployee/${id}`);
         setEmployees((prev) => prev.filter((emp) => emp._id !== id));
         toast.success("Employee deleted successfully");

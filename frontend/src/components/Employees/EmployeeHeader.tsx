@@ -6,6 +6,16 @@ import { Plus, Users } from "lucide-react";
 interface EmployeeHeaderProps {
   openModal: () => void;
 }
+/**
+ * EmployeeHeader component
+ *
+ * This component renders the header section for the Employee Management page.
+ * It includes a title and an "Add Employee" button.
+ *
+ * Props:
+ * - openModal: A function to open the employee modal when the "Add Employee" button is clicked.
+ */
+
 const EmployeeHeader = ({ openModal }: EmployeeHeaderProps) => {
   return (
     <div className="employee-header">

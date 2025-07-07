@@ -7,6 +7,21 @@ import { Save, X } from "lucide-react";
 import { memo, useCallback, useState } from "react";
 import toast from "react-hot-toast";
 
+/**
+ * EmployeeModal component
+ *
+ * This component renders a modal for creating or editing an employee.
+ * It handles form data changes and submission to save employee details.
+ * It includes fields for full name, email, department, position, salary, phone, and address.
+ * The modal can be closed using the "Cancel" button or the close icon.
+ *
+ * Props:
+ * - closeModal: A function to close the modal.
+ * - formData: An object containing the current form data for the employee.
+ * - setFormData: A function to update the form data state.
+ * - setEmployees: A function to update the list of employees.
+ */
+
 const EmployeeModal = ({
   closeModal,
   formData,
@@ -25,7 +40,9 @@ const EmployeeModal = ({
     ) => {
       // Destruct the values
       const { name, value } = e.target;
+      // if name is empty return
       if (!name) return;
+      // Update the form data
       setFormData((prevFormData) => {
         const updated = {
           ...(prevFormData || {}),
@@ -39,9 +56,10 @@ const EmployeeModal = ({
   // function to submit the form
   const handleSubmit = useCallback(async () => {
     try {
-      console.log(formData);
       setIsLoading(true);
+      // Submit the form
       await AxiosInstance.post(`/employees/upsertEmployee`, formData);
+      // Update the employees
       setEmployees((prevState: Employee[]) =>
         prevState.map((employee) =>
           employee._id === formData?._id ? formData : employee
@@ -49,7 +67,6 @@ const EmployeeModal = ({
       );
       toast.success("Employee saved successfully");
     } catch (error) {
-      console.log(error);
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data?.message || "Something went wrong");
     } finally {

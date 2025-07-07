@@ -1,21 +1,29 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
 import EmployeeHeader from "@/components/Employees/EmployeeHeader";
-import "@/styles/components/employees.scss";
-import EmployeesList from "@/components/Employees/EmployeesList";
-import AxiosInstance from "@/lib/AxiosInstance";
-import toast, { LoaderIcon } from "react-hot-toast";
-import { AxiosError } from "axios";
-import { Employee } from "@/types/employees.type";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import EmployeesPagination from "@/components/Employees/EmployeesPagination";
 import EmployeeModal from "@/components/Employees/EmployeeModal";
 import EmployeeSearchFilter from "@/components/Employees/EmployeeSearchFilter";
+import EmployeesList from "@/components/Employees/EmployeesList";
+import EmployeesPagination from "@/components/Employees/EmployeesPagination";
 import useDebounce from "@/hooks/debounce";
+import AxiosInstance from "@/lib/AxiosInstance";
+import "@/styles/components/employees.scss";
+import { Employee } from "@/types/employees.type";
+import { AxiosError } from "axios";
+import { useCallback, useEffect, useState } from "react";
+import toast, { LoaderIcon } from "react-hot-toast";
 
+/**
+ * The EmployeesWindow component
+ *
+ * This component is responsible for rendering the employees window
+ * It fetches the employees from the API and displays them in a list
+ * It also allows searching for employees by name, email, department, position, phone, or address
+ * It also has a pagination system to navigate through the list of employees
+ * It also has a modal to create or edit an employee
+ *
+ * @returns {JSX.Element} The employees window component
+ */
 export default function EmployeesWindow() {
   // state to hold the employees data
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -32,8 +40,6 @@ export default function EmployeesWindow() {
   // state to hold the search query
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
-  // use router
-  const router = useRouter();
   // function to fetch the employees
   const fetchEmployees = useCallback(
     async (page: number = 1, search: string | null = null) => {
@@ -73,7 +79,7 @@ export default function EmployeesWindow() {
     // Check if the user is logged in
     setIsModalOpen(true);
   }, []);
-
+  // function to handle page change
   const handlePageChange = useCallback(
     (page: number) => {
       fetchEmployees(page);

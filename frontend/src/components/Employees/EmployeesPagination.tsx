@@ -4,6 +4,19 @@ import { EmployeePagination } from "@/types/employees.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { memo } from "react";
 
+/**
+ * EmployeesPagination component
+ *
+ * This component renders a pagination section for the Employee Management page.
+ * It renders a left chevron button to navigate to the previous page,
+ * buttons for each page number, and a right chevron button to navigate to the next page.
+ * The current page is highlighted with the "active" class name.
+ *
+ * Props:
+ * - totalPages: The total number of pages.
+ * - currentPage: The current page number.
+ * - handlePageChange: A function to update the current page number.
+ */
 const EmployeesPagination = ({
   totalPages,
   currentPage,

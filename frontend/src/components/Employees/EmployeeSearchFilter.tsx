@@ -3,6 +3,19 @@
 import { Search } from "lucide-react";
 import { memo } from "react";
 
+/**
+ * EmployeeSearchFilter component
+ *
+ * This component renders a search input for filtering employees by
+ * name, email, department, position, phone, or address.
+ *
+ * Props:
+ * - search: The current search query.
+ * - setSearch: A function to update the search query state.
+ *
+ * Returns:
+ * - A JSX element representing the search input section.
+ */
 const EmployeeSearchFilter = ({
   search,
   setSearch,
