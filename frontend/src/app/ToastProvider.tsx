@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Toaster } from "react-hot-toast";
 
 /**
@@ -10,6 +11,6 @@ import { Toaster } from "react-hot-toast";
  * toast notifications can be triggered from anywhere within the application.
  */
 
-export default function ToastProvider() {
+export default memo(function ToastProvider() {
   return <Toaster position="top-right" />;
-}
+});
