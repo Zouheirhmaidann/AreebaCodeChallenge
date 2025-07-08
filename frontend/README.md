@@ -11,7 +11,7 @@ Below are the features and libraries used in the frontend:
 
 ### Features:
 
-- An AxiosInstance file has been created to serve as an Axios helper, which automatically handles errors, includes the auth token in headers, and uses a base URL.
+- An AxiosInstance file located in src/lib has been created to serve as an Axios helper, which automatically handles errors, includes the auth token in headers, and uses a base URL.
 - The `src/components` directory is used to define components for the authentication and employee screens.
 
   - Employees:
