@@ -30,7 +30,7 @@ const EmployeeModal = ({
 }: EmployeeModalTypes) => {
   console.log(formData, "formdata");
   // State to show the loading indicator
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // Function to hanfle data change
   const onChangeData = useCallback(
     (
@@ -62,7 +62,7 @@ const EmployeeModal = ({
       // Update the employees
       setEmployees((prevState: Employee[]) =>
         prevState.map((employee) =>
-          employee._id === formData?._id ? formData : employee
+          employee._id === formData?._id ? { ...employee, ...formData } : employee
         )
       );
       toast.success("Employee saved successfully");
@@ -72,7 +72,7 @@ const EmployeeModal = ({
     } finally {
       closeModal();
     }
-  }, [formData, closeModal]);
+  }, [formData, closeModal, setEmployees]);
 
   return (
     <div className="modal-overlay">

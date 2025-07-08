@@ -44,4 +44,4 @@ Below are the features and libraries used in the frontend:
 - Animations are defined in SCSS files.
 - The "types" folder declares types for employee-related fields.
 - Employee pagination is limited to 4 by default.
-- Debouncing is implemented to delay fetching data until there is a pause in input activity.
+- Debouncing custom hook is implemented to delay fetching data until there is a pause in input activity.

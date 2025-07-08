@@ -1,5 +1,5 @@
 export type Employee = {
-  _id: string;
+  _id: string | null | undefined;
   full_name: string;
   email: string;
   department: string;

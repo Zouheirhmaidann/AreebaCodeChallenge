@@ -13,6 +13,17 @@ import { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import toast, { LoaderIcon } from "react-hot-toast";
 
+const defaultValues = {
+  _id: null,
+  full_name: "",
+  email: "",
+  department: "",
+  position: "",
+  salary: 0,
+  phone: "",
+  address: "",
+}
+
 /**
  * The EmployeesWindow component
  *
@@ -36,7 +47,7 @@ export default function EmployeesWindow() {
   // State to open the modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   // state to store the form data
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<Employee>(defaultValues);
   // state to hold the search query
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
@@ -68,13 +79,13 @@ export default function EmployeesWindow() {
   // useEffect to fetch the employees
   useEffect(() => {
     fetchEmployees();
-  }, []);
+  }, [fetchEmployees]);
   // function to open the modal
   const openModal = useCallback((employee?: Employee) => {
     if (employee) {
       setFormData(employee);
     } else {
-      setFormData({});
+      setFormData(defaultValues);
     }
     // Check if the user is logged in
     setIsModalOpen(true);

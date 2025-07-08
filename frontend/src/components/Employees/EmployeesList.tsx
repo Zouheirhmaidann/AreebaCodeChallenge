@@ -34,9 +34,9 @@ const EmployeesList: React.FC<{
   setEmployees: React.Dispatch<React.SetStateAction<Employee[]>>;
 }> = ({ employees, openModal, setEmployees }) => {
   // State to show the loading indicator
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   // Function to delete employee
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string | null) => {
     try {
       setLoading(true);
       // Confirm delete
@@ -46,7 +46,7 @@ const EmployeesList: React.FC<{
         setEmployees((prev) => prev.filter((emp) => emp._id !== id));
         toast.success("Employee deleted successfully");
       }
-    } catch (error) {
+    } catch  {
       toast.error("Error deleting employee");
     } finally {
       setLoading(false);
@@ -99,7 +99,7 @@ const EmployeesList: React.FC<{
             </button>
             <button
               className="action-button delete-button"
-              onClick={() => handleDelete(employee?._id)}
+              onClick={() => handleDelete(employee?._id || null)}
             >
               {loading ? <LoaderIcon /> : <Trash2 size={16} />}
             </button>
