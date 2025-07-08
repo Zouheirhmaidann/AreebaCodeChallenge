@@ -12,7 +12,7 @@ import { Employee } from "@/types/employees.type";
 import { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import toast, { LoaderIcon } from "react-hot-toast";
-
+// Default form data
 const defaultValues = {
   _id: null,
   full_name: "",
