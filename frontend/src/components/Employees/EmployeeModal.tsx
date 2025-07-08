@@ -28,7 +28,6 @@ const EmployeeModal = ({
   setFormData,
   setEmployees,
 }: EmployeeModalTypes) => {
-  console.log(formData, "formdata");
   // State to show the loading indicator
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // Function to hanfle data change
@@ -54,23 +53,30 @@ const EmployeeModal = ({
     [setFormData]
   );
   // function to submit the form
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     try {
+      //stop the form from submitting
+      e.preventDefault();
+      // Set loading state
       setIsLoading(true);
       // Submit the form
       await AxiosInstance.post(`/employees/upsertEmployee`, formData);
       // Update the employees
-      setEmployees((prevState: Employee[]) =>
+      if(formData?._id) {
+        setEmployees((prevState: Employee[]) =>
         prevState.map((employee) =>
           employee._id === formData?._id ? { ...employee, ...formData } : employee
         )
       );
+      } else {
+        setEmployees((prevState: Employee[]) => [...prevState, formData as Employee]);
+      }
       toast.success("Employee saved successfully");
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data?.message || "Something went wrong");
     } finally {
-      closeModal();
+      closeModal(formData?._id ? false : true);
     }
   }, [formData, closeModal, setEmployees]);
 
@@ -81,7 +87,7 @@ const EmployeeModal = ({
           <h2>
             {formData?._id ? `Edit ${formData?.full_name}` : "Add New Employee"}
           </h2>
-          <button className="close-button" onClick={closeModal}>
+          <button className="close-button" onClick={() => closeModal(false)}>
             <X size={24} />
           </button>
         </div>
@@ -154,7 +160,7 @@ const EmployeeModal = ({
               <label htmlFor="phone">Phone</label>
               <input
                 id="phone"
-                type="text"
+                type="number"
                 name="phone"
                 value={formData?.phone}
                 onChange={onChangeData}
@@ -179,7 +185,7 @@ const EmployeeModal = ({
             <button
               type="button"
               className="cancel-button"
-              onClick={closeModal}
+              onClick={() => closeModal(false)}
             >
               Cancel
             </button>

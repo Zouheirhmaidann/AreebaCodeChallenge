@@ -1,8 +1,9 @@
 "use client";
 
-import { memo } from "react";
-import { Plus, Users } from "lucide-react";
-
+import { memo, useCallback } from "react";
+import { LogOut, Plus, Users } from "lucide-react";
+import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 interface EmployeeHeaderProps {
   openModal: () => void;
 }
@@ -17,6 +18,16 @@ interface EmployeeHeaderProps {
  */
 
 const EmployeeHeader = ({ openModal }: EmployeeHeaderProps) => {
+  // Funciton to logout the user
+  const handleLogout = useCallback(() => {
+    // Confirm logout
+   if(window.confirm("Are you sure you want to logout?")) {
+    // Remove the token from the cookie
+    Cookies.remove("auth-token");
+    // Redirect to the login page
+    redirect("/login");
+   }
+  }, [])
   return (
     <div className="employee-header">
       <div className="header-content">
@@ -26,10 +37,16 @@ const EmployeeHeader = ({ openModal }: EmployeeHeaderProps) => {
             <h1>Employee Management</h1>
           </div>
         </div>
-        <button className="add-button" onClick={() => openModal()}>
+        <div className="row">
+          <button className="add-button" onClick={() => openModal()}>
           <Plus size={25} />
           Add Employee
         </button>
+         <button className="add-button" onClick={handleLogout}>
+          <LogOut size={25} />
+          Logout
+        </button>
+        </div>
       </div>
     </div>
   );

@@ -33,12 +33,13 @@ const EmployeesList: React.FC<{
   openModal: (employee?: Employee) => void;
   setEmployees: React.Dispatch<React.SetStateAction<Employee[]>>;
 }> = ({ employees, openModal, setEmployees }) => {
-  // State to show the loading indicator
-  const [loading, setLoading] = useState<boolean>(false);
+  // State to show the loading indicator for delete
+  const [activeDeleteId, setActiveDeleteId] = useState<string | null>(null);
   // Function to delete employee
   const handleDelete = async (id: string | null) => {
     try {
-      setLoading(true);
+      if(!id) return
+      setActiveDeleteId(id);
       // Confirm delete
       if (window.confirm("Are you sure you want to delete this employee?")) {
         // Delete employee
@@ -49,43 +50,43 @@ const EmployeesList: React.FC<{
     } catch  {
       toast.error("Error deleting employee");
     } finally {
-      setLoading(false);
+      setActiveDeleteId(null);
     }
   };
   return (
     <div className="employee-grid">
       {employees.map((employee, index) => (
         <div
-          key={employee._id}
+          key={employee?._id}
           className="employee-card"
           style={{ animationDelay: `${index * 0.1}s` }}
         >
           <div className="employee-info">
             <div className="employee-name">
-              <h3>{employee.full_name}</h3>
-              <span className="employee-position">{employee.position}</span>
+              <h3>{employee?.full_name}</h3>
+              <span className="employee-position">{employee?.position}</span>
             </div>
 
             <div className="employee-details">
               <div className="detail-item">
                 <Mail size={16} />
-                <span>{employee.email}</span>
+                <span>{employee?.email}</span>
               </div>
               <div className="detail-item">
                 <Phone size={16} />
-                <span>{employee.phone}</span>
+                <span>{employee?.phone}</span>
               </div>
               <div className="detail-item">
                 <Building size={16} />
-                <span>{employee.department}</span>
+                <span>{employee?.department}</span>
               </div>
               <div className="detail-item">
                 <DollarSign size={16} />
-                <span>{employee.salary}</span>
+                <span>{employee?.salary}</span>
               </div>
               <div className="detail-item">
                 <MapPin size={16} />
-                <span>{employee.address}</span>
+                <span>{employee?.address}</span>
               </div>
             </div>
           </div>
@@ -101,7 +102,7 @@ const EmployeesList: React.FC<{
               className="action-button delete-button"
               onClick={() => handleDelete(employee?._id || null)}
             >
-              {loading ? <LoaderIcon /> : <Trash2 size={16} />}
+              {activeDeleteId === employee?._id ?  <LoaderIcon /> : <Trash2 size={16} />}
             </button>
           </div>
         </div>

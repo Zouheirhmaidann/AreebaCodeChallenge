@@ -16,7 +16,7 @@ export type EmployeePagination = {
 };
 
 export type EmployeeModalTypes = {
-  closeModal: () => void;
+  closeModal: (e: boolean | undefined | null) => void;
   formData?: Employee;
   setFormData: React.Dispatch<React.SetStateAction<Employee>>;
   setEmployees: React.Dispatch<React.SetStateAction<Employee[]>>;

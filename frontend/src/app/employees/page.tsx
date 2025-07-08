@@ -102,7 +102,25 @@ export default function EmployeesWindow() {
   useEffect(() => {
     fetchEmployees(1, debouncedSearch);
   }, [debouncedSearch, fetchEmployees]);
+  // Function to close modal
+  const onCloseModal = useCallback(async (created?: boolean) => {
+    setIsModalOpen(false);
 
+    if (created === true) {
+      try {
+        // Get updated employee count
+        const { data: response } = await AxiosInstance.get(`/employees/getEmployees?page=1&limit=1`);
+        if (!response?.total) throw Error;
+        const totalEmployees = response.total;
+        const newLastPage = Math.ceil(totalEmployees / 4);
+        // Fetch employees for the new last page
+        await fetchEmployees(newLastPage);
+        setCurrentPage(newLastPage);
+      } catch {
+        toast.error("Failed to load newly created employee");
+      }
+    }
+  }, [fetchEmployees, setIsModalOpen, setCurrentPage]);
   return (
     <div>
       <EmployeeHeader openModal={openModal} />
@@ -129,7 +147,7 @@ export default function EmployeesWindow() {
       />
       {isModalOpen && (
         <EmployeeModal
-          closeModal={() => setIsModalOpen(false)}
+          closeModal={(e? : boolean | undefined | null) => onCloseModal(e as boolean)}
           formData={formData as Employee}
           setFormData={setFormData}
           setEmployees={setEmployees}
