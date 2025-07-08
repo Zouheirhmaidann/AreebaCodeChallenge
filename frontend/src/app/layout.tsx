@@ -4,6 +4,9 @@ import ToastProvider from "./ToastProvider";
 export const metadata = {
   title: "Areeba Code Challenge",
   description: "A code challenge by Areeba",
+  icons: {
+    icon: "/areeba-icon.png", // path relative to /public
+  },
 };
 
 export default function RootLayout({

@@ -154,7 +154,7 @@ const AuthComponent: React.FC<AuthComponentProps> = ({
         <div className="auth-footer">
           {type === "login" ? (
             <p>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/register" className="auth-link">
                 Sign up
               </Link>
