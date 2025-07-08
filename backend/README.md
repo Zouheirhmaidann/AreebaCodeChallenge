@@ -2,7 +2,12 @@
 
 ### Files
 
-- Please create a ".env" file in the src folder and add the variables mentioned in the email
+- Please create a ".env" file in the src folder and add the following variables:
+
+      `MONGO_URI=mongodb+srv://zouheirhmaidan76:areebaCodeChallenge@areebacluster.ubmdoif.mongodb.net/?retryWrites=true&w=majority&appName=AreebaCluster
+      PORT=3001
+      JWT_SECRET=areebaSecret`
+
 - Run `npm i` to install the required modules
 
 Terminal: Run `npm run start:dev` to start the development server.
