@@ -42,7 +42,9 @@ export class EmployeesService {
       // Save the employee
       return newEmployee.save();
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      throw new InternalServerErrorException(
+        error instanceof Error ? error.message : "Error upserting"
+      );
     }
   }
   // Function to create multiple employees for testing
@@ -57,7 +59,7 @@ export class EmployeesService {
         results.push(updatedOrCreated);
       } catch (error) {
         throw new InternalServerErrorException(
-          `Error upserting employee: ${error.message}`
+          error instanceof Error ? error.message : "Error upserting"
         );
       }
     }
@@ -95,7 +97,9 @@ export class EmployeesService {
       // Return the employees
       return { data, total, page, limit };
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      throw new InternalServerErrorException(
+        error instanceof Error ? error.message : "Error fetching employees"
+      );
     }
   }
 
@@ -112,7 +116,9 @@ export class EmployeesService {
       // Return the employee
       return existingEmployee;
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      throw new InternalServerErrorException(
+        error instanceof Error ? error.message : "Error fetching employee"
+      );
     }
   }
 
@@ -122,7 +128,9 @@ export class EmployeesService {
       // Find and delete the employee, returning the deleted doc
       return await this.employeeModel.findByIdAndDelete(id).exec();
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      throw new InternalServerErrorException(
+        error instanceof Error ? error.message : "Error deleting employee"
+      );
     }
   }
 }

@@ -23,10 +23,12 @@ export class EmployeesController {
   @UseGuards(JwtAuthGuard)
   async upsert(@Body() body: CreateOrUpdateEmployeeDto): Promise<Employee> {
     try {
+      // Call the upsert function from the EmployeesService
       return await this.employeesService.upsert(body);
     } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException(error.message);
+      throw new InternalServerErrorException(
+        error instanceof Error ? error.message : "Error upserting"
+      );
     }
   }
   // Upsert many for testing to create multiple employees

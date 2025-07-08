@@ -13,7 +13,9 @@ export class UsersController {
       // Call the create function from the UsersService, pass the email and password
       return await this.userService.create(body?.email, body?.password);
     } catch (error) {
-      throw new UnauthorizedException(error.message);
+      throw new UnauthorizedException(
+        error instanceof Error ? error.message : "Error creating user"
+      );
     }
   }
   // Post method to login a user
@@ -30,7 +32,9 @@ export class UsersController {
       };
     } catch (error) {
       // You can check the error type or message and respond accordingly
-      throw new UnauthorizedException(error?.message || "Invalid credentials");
+      throw new UnauthorizedException(
+        error instanceof Error ? error.message : "Invalid credentials"
+      );
     }
   }
 }

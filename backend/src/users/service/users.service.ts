@@ -31,7 +31,9 @@ export class UsersService {
       // Save the user
       return await user.save();
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      throw new InternalServerErrorException(
+        error instanceof Error ? error.message : "Error creating user"
+      );
     }
   }
   // Function to login a user
