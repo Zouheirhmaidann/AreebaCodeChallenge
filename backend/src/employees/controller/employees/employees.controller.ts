@@ -31,12 +31,6 @@ export class EmployeesController {
       );
     }
   }
-  // Upsert many for testing to create multiple employees
-  @Post(`upsertMany`)
-  @UseGuards(JwtAuthGuard)
-  async upsertMany(@Body() body: CreateOrUpdateEmployeeDto[]) {
-    return this.employeesService.upsertMany(body);
-  }
   // Get method to fetch all employees
   @Get(`getEmployees`)
   @UseGuards(JwtAuthGuard)

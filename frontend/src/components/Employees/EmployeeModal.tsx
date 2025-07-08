@@ -111,6 +111,8 @@ const EmployeeModal = ({
                 id="email"
                 type="email"
                 name="email"
+                style={formData?._id ? {opacity: 0.4 } : {}}
+                disabled={formData?._id ? true : false}
                 value={formData?.email}
                 onChange={onChangeData}
                 required

@@ -47,26 +47,6 @@ export class EmployeesService {
       );
     }
   }
-  // Function to create multiple employees for testing
-  async upsertMany(
-    employees: CreateOrUpdateEmployeeDto[]
-  ): Promise<Employee[]> {
-    const results: Employee[] = [];
-
-    for (const emp of employees) {
-      try {
-        // Call the upsert function from the EmployeesService
-        const updatedOrCreated = await this.upsert(emp);
-        results.push(updatedOrCreated);
-      } catch (error) {
-        throw new InternalServerErrorException(
-          error instanceof Error ? error.message : "Error upserting"
-        );
-      }
-    }
-
-    return results;
-  }
 
   // Function to fetch all employees
   async findAllPaginated(page: number, limit: number, search?: string) {
