@@ -63,7 +63,6 @@ export default function EmployeesWindow() {
         );
         // Check if the response is null
         if (!response?.data) throw Error;
-        console.log(response);
         setEmployees(response.data);
         setTotalPages(Math.ceil(response.total / 4));
         setCurrentPage(page);
