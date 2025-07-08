@@ -3,6 +3,7 @@
 ### Files
 
 - Please create a ".env.local" file in the src folder and add the following line: NEXT_PUBLIC_API_URL=http://localhost:3001/
+- Run `npm i` to install the required modules
 
 Terminal: Run `npm run dev` to start the development server.
 
