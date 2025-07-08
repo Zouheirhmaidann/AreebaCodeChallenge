@@ -55,6 +55,7 @@ export class EmployeesService {
 
     for (const emp of employees) {
       try {
+        // Call the upsert function from the EmployeesService
         const updatedOrCreated = await this.upsert(emp);
         results.push(updatedOrCreated);
       } catch (error) {

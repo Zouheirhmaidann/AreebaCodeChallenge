@@ -52,15 +52,16 @@ export class EmployeesController {
   }> {
     page = Number(page);
     limit = Number(limit);
-
+    // Call the findAllPaginated function from the EmployeesService
     return this.employeesService.findAllPaginated(page, limit, search);
   }
   // Delete method to delete an employee
   @Delete("deleteEmployee/:id")
   @UseGuards(JwtAuthGuard)
   async deleteEmployee(@Param("id") id: string): Promise<{ message: string }> {
+    // Call the deleteById function from the EmployeesService
     const deletedEmployee = await this.employeesService.deleteById(id);
-
+    // Return the message
     if (deletedEmployee) {
       return {
         message: `Employee with email ${deletedEmployee?.email} deleted successfully.`,
